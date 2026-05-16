@@ -1,0 +1,300 @@
+openapi: '3.0.2'
+info:
+  title: Appointment App
+  version: '1.0'
+  description: |
+    Small "REST-like" API that handles appointments between doctors and patients.
+servers:
+  - url: https://api.eztask.test/
+
+paths:
+  #################################################
+  # Appointments
+  #################################################
+  /v1/appointment:
+    post:
+      summary: Create a new appointment
+      parameters:
+        - in: header
+          name: X-Username
+          required: true
+          schema:
+            type: string
+            pattern: '^[a-zA-Z0-9_]{4,32}$'
+          description: >
+            Required header that should contain the username (e.g., the doctor creating
+            this appointment). The service trusts this header as the authenticated user.
+      requestBody:
+        description: JSON object containing appointment details
+        required: true
+        content:
+          application/json:
+            schema: {}
+      responses:
+        '201':
+          description: Returns the created appointment.
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: Validation error (invalid input, missing fields, etc.).
+        '401':
+          description: Username header missing.
+          
+  /v1/appointment/{id}:
+    get:
+      summary: Retrieve an appointment by its unique ID
+      description: >
+        Returns a single appointment, including a list of doctors at the appointment
+        and the patient data.
+      parameters:
+        - in: header
+          name: X-Username
+          required: true
+          schema:
+            type: string
+            pattern: '^[a-zA-Z0-9_]{4,32}$'
+          description: >
+            Required header containing the username, trusted as the authenticated user.
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID of the appointment to retrieve.
+      responses:
+        '200':
+          description: A response containing the requested appointment details.
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: Invalid or missing query parameter(s).
+        '401':
+          description: Username header missing.
+        '404':
+          description: Appointment not found.
+    post:
+      summary: Cancel an appointment
+      parameters:
+        - in: header
+          name: X-Username
+          required: true
+          schema:
+            type: string
+            pattern: '^[a-zA-Z0-9_]{4,32}$'
+          description: >
+            Required header containing the username of the user attempting to cancel the appointment.
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID of the appointment to cancel.
+      responses:
+        '200':
+          description: Appointment canceled successfully.
+          content:
+            application/json:
+              schema: {}
+        '401':
+          description: Username header missing.
+        '403':
+          description: User not authorized to cancel this appointment.
+        '404':
+          description: Appointment not found.
+
+  /v1/appointment/doctor/{id}:
+    get:
+      summary: Retrieve all appointments by doctor ID
+      description: >
+        Returns a list of appointments associated with a given doctor.
+      parameters:
+        - in: header
+          name: X-Username
+          required: true
+          schema:
+            type: string
+            pattern: '^[a-zA-Z0-9_]{4,32}$'
+          description: >
+            Required header containing the username, trusted as the authenticated user.
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The unique ID of the doctor whose appointments to retrieve.
+      responses:
+        '200':
+          description: A list of appointments for the specified doctor.
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: Invalid or missing query parameter(s).
+        '401':
+          description: Username header missing.
+        '404':
+          description: Doctor not found or no appointments found.
+
+  #################################################
+  # Patients
+  #################################################
+  /v1/patient:
+    post:
+      summary: Create a new patient
+      parameters:
+        - in: header
+          name: X-Username
+          required: true
+          schema:
+            type: string
+            pattern: '^[a-zA-Z0-9_]{4,32}$'
+          description: >
+            Required header that should contain the username.
+      requestBody:
+        description: JSON object containing new patient details
+        required: true
+        content:
+          application/json:
+            schema: {}
+      responses:
+        '201':
+          description: Returns the created patient record.
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: Validation error (invalid input, missing fields, etc.).
+        '401':
+          description: Username header missing.
+
+  /v1/patient/search:
+    post:
+      summary: Search for patients
+      parameters:
+        - in: header
+          name: X-Username
+          required: true
+          schema:
+            type: string
+            pattern: '^[a-zA-Z0-9_]{4,32}$'
+          description: >
+            Required username header. All users must supply
+            a valid username, even for searching.
+      requestBody:
+        description: JSON object containing search text and limit
+        required: true
+        content:
+          application/json:
+            schema: {}
+      responses:
+        '200':
+          description: A list (page) of patients matching the search criteria.
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: Bad request (invalid query params).
+        '401':
+          description: Username header missing.
+
+  /v1/patient/{id}:
+    delete:
+      summary: Delete a patient record
+      parameters:
+        - in: header
+          name: X-Username
+          required: true
+          schema:
+            type: string
+            pattern: '^[a-zA-Z0-9_]{4,32}$'
+          description: >
+            Required header containing the username of the user requesting the delete operation.
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID of the patient record to delete.
+      responses:
+        '200':
+          description: Patient record deleted successfully.
+          content:
+            application/json:
+              schema: {}
+        '401':
+          description: Username header missing.
+        '403':
+          description: User not authorized to delete this patient record.
+        '404':
+          description: Patient not found.
+
+  #################################################
+  # Doctors
+  #################################################
+ 
+  /v1/doctor:
+    post:
+      summary: Create a new doctor
+      parameters:
+        - in: header
+          name: X-Username
+          required: true
+          schema:
+            type: string
+            pattern: '^[a-zA-Z0-9_]{4,32}$'
+          description: >
+            Required header that should contain the username, trusted as the authenticated user.
+      requestBody:
+        description: JSON object containing new doctor details
+        required: true
+        content:
+          application/json:
+            schema: {}
+      responses:
+        '201':
+          description: Returns the created doctor record.
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: Validation error (invalid input, missing fields, etc.).
+        '401':
+          description: Username header missing.
+
+  /v1/doctor/{id}:
+    delete:
+      summary: Delete a doctor record
+      parameters:
+        - in: header
+          name: X-Username
+          required: true
+          schema:
+            type: string
+            pattern: '^[a-zA-Z0-9_]{4,32}$'
+          description: >
+            Required header containing the username of the user requesting the delete operation.
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID of the doctor record to delete.
+      responses:
+        '200':
+          description: Doctor record deleted successfully.
+          content:
+            application/json:
+              schema: {}
+        '401':
+          description: Username header missing.
+        '403':
+          description: User not authorized to delete this doctor record.
+        '404':
+          description: Doctor not found.
