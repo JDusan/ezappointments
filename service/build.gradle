@@ -1,0 +1,5 @@
+description = 'Business services, mappers, and domain exceptions'
+
+dependencies {
+    implementation project(':repository')
+}

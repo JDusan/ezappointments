@@ -1,0 +1,9 @@
+plugins {
+    id 'org.springframework.boot'
+}
+
+description = 'Spring Boot application assembly and runtime configuration'
+
+dependencies {
+    implementation project(':web')
+}
