@@ -29,17 +29,27 @@ paths:
         required: true
         content:
           application/json:
-            schema: {}
+            schema:
+              $ref: '#/components/schemas/CreateAppointmentRequest'
       responses:
         '201':
           description: Returns the created appointment.
           content:
             application/json:
-              schema: {}
+              schema:
+                $ref: '#/components/schemas/Appointment'
         '400':
           description: Validation error (invalid input, missing fields, etc.).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '401':
           description: Username header missing.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
           
   /v1/appointment/{id}:
     get:
@@ -68,13 +78,26 @@ paths:
           description: A response containing the requested appointment details.
           content:
             application/json:
-              schema: {}
+              schema:
+                $ref: '#/components/schemas/Appointment'
         '400':
           description: Invalid or missing query parameter(s).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '401':
           description: Username header missing.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '404':
           description: Appointment not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
     post:
       summary: Cancel an appointment
       parameters:
@@ -98,13 +121,26 @@ paths:
           description: Appointment canceled successfully.
           content:
             application/json:
-              schema: {}
+              schema:
+                $ref: '#/components/schemas/Appointment'
         '401':
           description: Username header missing.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '403':
           description: User not authorized to cancel this appointment.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '404':
           description: Appointment not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
   /v1/appointment/doctor/{id}:
     get:
@@ -127,18 +163,46 @@ paths:
             type: string
             format: uuid
           description: The unique ID of the doctor whose appointments to retrieve.
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 200
+            default: 20
+          description: Maximum number of appointments to return.
+        - in: query
+          name: cursor
+          required: false
+          schema:
+            type: string
+          description: Opaque pagination cursor for fetching the next page of appointments.
       responses:
         '200':
           description: A list of appointments for the specified doctor.
           content:
             application/json:
-              schema: {}
+              schema:
+                $ref: '#/components/schemas/AppointmentPageResponse'
         '400':
           description: Invalid or missing query parameter(s).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '401':
           description: Username header missing.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '404':
           description: Doctor not found or no appointments found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
   #################################################
   # Patients
@@ -160,17 +224,27 @@ paths:
         required: true
         content:
           application/json:
-            schema: {}
+            schema:
+              $ref: '#/components/schemas/CreatePatientRequest'
       responses:
         '201':
           description: Returns the created patient record.
           content:
             application/json:
-              schema: {}
+              schema:
+                $ref: '#/components/schemas/Patient'
         '400':
           description: Validation error (invalid input, missing fields, etc.).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '401':
           description: Username header missing.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
   /v1/patient/search:
     post:
@@ -190,17 +264,27 @@ paths:
         required: true
         content:
           application/json:
-            schema: {}
+            schema:
+              $ref: '#/components/schemas/SearchPatientRequest'
       responses:
         '200':
           description: A list (page) of patients matching the search criteria.
           content:
             application/json:
-              schema: {}
+              schema:
+                $ref: '#/components/schemas/PatientPageResponse'
         '400':
           description: Bad request (invalid query params).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '401':
           description: Username header missing.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
   /v1/patient/{id}:
     delete:
@@ -222,17 +306,32 @@ paths:
             format: uuid
           description: ID of the patient record to delete.
       responses:
-        '200':
+        '204':
           description: Patient record deleted successfully.
-          content:
-            application/json:
-              schema: {}
         '401':
           description: Username header missing.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '403':
           description: User not authorized to delete this patient record.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '404':
           description: Patient not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Deleting a patient with ACTIVE future appointments is forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
   #################################################
   # Doctors
@@ -255,17 +354,27 @@ paths:
         required: true
         content:
           application/json:
-            schema: {}
+            schema:
+              $ref: '#/components/schemas/CreateDoctorRequest'
       responses:
         '201':
           description: Returns the created doctor record.
           content:
             application/json:
-              schema: {}
+              schema:
+                $ref: '#/components/schemas/Doctor'
         '400':
           description: Validation error (invalid input, missing fields, etc.).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '401':
           description: Username header missing.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
   /v1/doctor/{id}:
     delete:
@@ -287,14 +396,235 @@ paths:
             format: uuid
           description: ID of the doctor record to delete.
       responses:
-        '200':
+        '204':
           description: Doctor record deleted successfully.
-          content:
-            application/json:
-              schema: {}
         '401':
           description: Username header missing.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '403':
           description: User not authorized to delete this doctor record.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '404':
           description: Doctor not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+            description: Deleting a doctor with ACTIVE future appointments is forbidden.
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    Doctor:
+      type: object
+      required:
+        - id
+        - username
+        - firstName
+        - lastName
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+          pattern: '^[a-zA-Z0-9_]{4,32}$'
+        firstName:
+          type: string
+        lastName:
+          type: string
+    Patient:
+      type: object
+      required:
+        - id
+        - firstName
+        - lastName
+        - dateOfBirth
+      properties:
+        id:
+          type: string
+          format: uuid
+        firstName:
+          type: string
+        middleName:
+          type: string
+          nullable: true
+        lastName:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date
+    Appointment:
+      type: object
+      required:
+        - id
+        - patient
+        - doctors
+        - createdByDoctorId
+        - startsAt
+        - endsAt
+        - status
+      properties:
+        id:
+          type: string
+          format: uuid
+        patient:
+          $ref: '#/components/schemas/Patient'
+        doctors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Doctor'
+        createdByDoctorId:
+          type: string
+          format: uuid
+        startsAt:
+          type: string
+          format: date-time
+        endsAt:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum:
+            - ACTIVE
+            - CANCELED
+        canceledAt:
+          type: string
+          format: date-time
+          nullable: true
+    CreateDoctorRequest:
+      type: object
+      required:
+        - username
+        - firstName
+        - lastName
+      properties:
+        username:
+          type: string
+          pattern: '^[a-zA-Z0-9_]{4,32}$'
+        firstName:
+          type: string
+        lastName:
+          type: string
+    CreatePatientRequest:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - dateOfBirth
+      properties:
+        firstName:
+          type: string
+        middleName:
+          type: string
+          nullable: true
+        lastName:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date
+    CreateAppointmentRequest:
+      type: object
+      required:
+        - patientId
+        - doctorIds
+        - startsAt
+        - endsAt
+      properties:
+        patientId:
+          type: string
+          format: uuid
+        doctorIds:
+          type: array
+          minItems: 1
+          items:
+            type: string
+            format: uuid
+        startsAt:
+          type: string
+          format: date-time
+        endsAt:
+            type: string
+            format: date-time
+    SearchPatientRequest:
+      type: object
+      required:
+        - query
+      properties:
+        query:
+          type: string
+          minLength: 1
+          description: Free-text patient search term.
+        limit:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 20
+        cursor:
+          type: string
+          nullable: true
+          description: Opaque pagination cursor for fetching the next page.
+    ErrorResponse:
+      type: object
+      required:
+        - status
+        - title
+      properties:
+        type:
+          type: string
+          format: uri
+          nullable: true
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+          nullable: true
+        instance:
+          type: string
+          nullable: true
+    PageInfo:
+      type: object
+      required:
+        - limit
+      properties:
+        limit:
+          type: integer
+        nextCursor:
+          type: string
+          nullable: true
+    PatientPageResponse:
+      type: object
+      required:
+        - items
+        - page
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Patient'
+        page:
+          $ref: '#/components/schemas/PageInfo'
+    AppointmentPageResponse:
+      type: object
+      required:
+        - items
+        - page
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Appointment'
+        page:
+          $ref: '#/components/schemas/PageInfo'
