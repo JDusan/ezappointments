@@ -1,5 +1,5 @@
 description = 'REST controllers, request filters, and exception handling'
 
 dependencies {
-    implementation project(':service')
+	implementation project(':service')
 }

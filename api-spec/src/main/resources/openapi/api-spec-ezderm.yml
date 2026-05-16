@@ -13,6 +13,7 @@ paths:
   #################################################
   /v1/appointment:
     post:
+      operationId: createAppointment
       summary: Create a new appointment
       parameters:
         - in: header
@@ -53,6 +54,7 @@ paths:
           
   /v1/appointment/{id}:
     get:
+      operationId: getAppointment
       summary: Retrieve an appointment by its unique ID
       description: >
         Returns a single appointment, including a list of doctors at the appointment
@@ -99,6 +101,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
     post:
+      operationId: cancelAppointment
       summary: Cancel an appointment
       parameters:
         - in: header
@@ -144,6 +147,7 @@ paths:
 
   /v1/appointment/doctor/{id}:
     get:
+      operationId: getAppointmentsByDoctor
       summary: Retrieve all appointments by doctor ID
       description: >
         Returns a list of appointments associated with a given doctor.
@@ -209,6 +213,7 @@ paths:
   #################################################
   /v1/patient:
     post:
+      operationId: createPatient
       summary: Create a new patient
       parameters:
         - in: header
@@ -248,6 +253,7 @@ paths:
 
   /v1/patient/search:
     post:
+      operationId: searchPatients
       summary: Search for patients
       parameters:
         - in: header
@@ -288,6 +294,7 @@ paths:
 
   /v1/patient/{id}:
     delete:
+      operationId: deletePatient
       summary: Delete a patient record
       parameters:
         - in: header
@@ -339,6 +346,7 @@ paths:
  
   /v1/doctor:
     post:
+      operationId: createDoctor
       summary: Create a new doctor
       parameters:
         - in: header
@@ -378,6 +386,7 @@ paths:
 
   /v1/doctor/{id}:
     delete:
+      operationId: deleteDoctor
       summary: Delete a doctor record
       parameters:
         - in: header

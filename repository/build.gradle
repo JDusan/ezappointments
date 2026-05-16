@@ -1,5 +1,5 @@
 description = 'Persistence entities, repositories, and Liquibase changelogs'
 
 dependencies {
-    implementation project(':api-spec')
+	implementation project(':api-spec')
 }

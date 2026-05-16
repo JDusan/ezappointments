@@ -2,6 +2,7 @@ import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
     id 'org.springframework.boot' version '4.0.6' apply false
+    id 'org.openapi.generator' version '7.22.0' apply false
     id 'com.diffplug.spotless' version '8.4.0' apply false
     id 'org.sonarqube' version '7.3.0.8198'
 }
@@ -37,7 +38,10 @@ subprojects {
     }
 
     spotless {
+        lineEndings 'UNIX'
+
         java {
+            target 'src/**/*.java'
             googleJavaFormat()
             removeUnusedImports()
             trimTrailingWhitespace()
@@ -49,6 +53,10 @@ subprojects {
             trimTrailingWhitespace()
             endWithNewline()
         }
+    }
+
+    tasks.named('check') {
+        dependsOn tasks.named('spotlessCheck')
     }
 }
 
@@ -62,4 +70,13 @@ sonar {
 wrapper {
     gradleVersion = '9.5.1'
     distributionType = Wrapper.DistributionType.BIN
+}
+
+tasks.register('formatAndBuild') {
+    group = 'verification'
+    description = 'Formats source files, and then runs the full build.'
+    dependsOn tasks.named('spotlessApply')
+    dependsOn tasks.named('build')
+
+    tasks.named('build').get().mustRunAfter tasks.named('clean')
 }

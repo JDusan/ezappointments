@@ -1,1 +1,44 @@
+plugins {
+	id 'org.openapi.generator'
+}
+
 description = 'OpenAPI contract and generated API DTOs/interfaces'
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+}
+
+def generatedDir = layout.buildDirectory.dir('generated/openapi')
+
+openApiGenerate {
+	generatorName = 'spring'
+	library = 'spring-boot'
+	inputSpec = layout.projectDirectory.file('src/main/resources/openapi/api-spec-ezderm.yml').asFile.path
+	outputDir = generatedDir.get().asFile.path
+	apiPackage = 'com.ezderm.appointment.api.controller'
+	modelPackage = 'com.ezderm.appointment.api.model'
+	invokerPackage = 'com.ezderm.appointment.api'
+	configOptions = [
+		annotationLibrary: 'none',
+		dateLibrary: 'java8',
+		documentationProvider: 'none',
+		interfaceOnly: 'true',
+		openApiNullable: 'false',
+		skipDefaultInterface: 'true',
+		useSpringBoot4: 'true',
+		useTags: 'true'
+	]
+}
+
+sourceSets {
+	main {
+		java {
+			srcDir generatedDir.map { it.dir('src/main/java') }
+		}
+	}
+}
+
+tasks.named('compileJava') {
+	dependsOn tasks.named('openApiGenerate')
+}
