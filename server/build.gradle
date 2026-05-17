@@ -6,5 +6,6 @@ description = 'Spring Boot application assembly and runtime configuration'
 
 dependencies {
 	implementation project(':web')
+	implementation project(':repository')
 	implementation 'org.springframework.boot:spring-boot-starter'
 }

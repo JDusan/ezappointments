@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AppointmentDoctorEntity {
 
-  @EmbeddedId private AppointmentDoctorId id;
+  @EmbeddedId private AppointmentDoctorPK id;
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @MapsId("appointmentId")
@@ -38,6 +38,6 @@ public class AppointmentDoctorEntity {
     this.appointment = appointment;
     this.doctor = doctor;
     this.sortOrder = sortOrder;
-    this.id = new AppointmentDoctorId(appointment.getId(), doctor.getId());
+    this.id = new AppointmentDoctorPK(appointment.getId(), doctor.getId());
   }
 }

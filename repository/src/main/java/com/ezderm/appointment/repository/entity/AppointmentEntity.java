@@ -30,7 +30,7 @@ import lombok.Setter;
 public class AppointmentEntity {
 
   @Id
-  @Column(name = "id", nullable = false)
+  @Column(name = "id", nullable = false, updatable = false)
   @Setter(AccessLevel.NONE)
   private UUID id = UUID.randomUUID();
 
@@ -62,6 +62,18 @@ public class AppointmentEntity {
   @OrderBy("sortOrder ASC")
   @Setter(AccessLevel.NONE)
   private List<AppointmentDoctorEntity> doctorParticipants = new ArrayList<>();
+
+  public AppointmentEntity(
+      PatientEntity patient, DoctorEntity createdByDoctor, Instant startsAt, Instant endsAt) {
+    this.patient = patient;
+    this.createdByDoctor = createdByDoctor;
+    this.startsAt = startsAt;
+    this.endsAt = endsAt;
+  }
+
+  public void addDoctorParticipant(DoctorEntity doctor, int sortOrder) {
+    doctorParticipants.add(new AppointmentDoctorEntity(this, doctor, sortOrder));
+  }
 
   @PrePersist
   void onCreate() {

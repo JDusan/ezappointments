@@ -77,6 +77,6 @@ api-spec/build/generated/openapi
 ## API Assumptions
 
 - Delete endpoints return `204 No Content`.
-- Pagination uses `limit` plus opaque `cursor` / `nextCursor`.
+- Pagination uses classic zero-based `page` plus `size` query parameters.
 - `409 Conflict` is used when deleting doctors or patients with active future appointments.
 - `X-Username` is trusted auth input and is required by all endpoints.

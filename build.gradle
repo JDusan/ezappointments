@@ -25,6 +25,8 @@ subprojects {
 
     dependencies {
         implementation platform(SpringBootPlugin.BOM_COORDINATES)
+        compileOnly platform(SpringBootPlugin.BOM_COORDINATES)
+        annotationProcessor platform(SpringBootPlugin.BOM_COORDINATES)
         testImplementation platform(SpringBootPlugin.BOM_COORDINATES)
     }
 
@@ -75,8 +77,16 @@ wrapper {
 tasks.register('formatAndBuild') {
     group = 'verification'
     description = 'Formats source files, and then runs the full build.'
-    dependsOn tasks.named('spotlessApply')
-    dependsOn tasks.named('build')
 
-    tasks.named('build').get().mustRunAfter tasks.named('clean')
+    def spotlessApplyTasks = subprojects.collect { it.tasks.named('spotlessApply') }
+    def buildTasks = subprojects.collect { it.tasks.named('build') }
+
+    dependsOn spotlessApplyTasks
+    dependsOn buildTasks
+
+    buildTasks.each { buildTask ->
+        buildTask.configure {
+            mustRunAfter spotlessApplyTasks
+        }
+    }
 }

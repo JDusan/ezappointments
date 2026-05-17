@@ -22,7 +22,7 @@ import lombok.Setter;
 public class PatientEntity {
 
   @Id
-  @Column(name = "id", nullable = false)
+  @Column(name = "id", nullable = false, updatable = false)
   @Setter(AccessLevel.NONE)
   private UUID id = UUID.randomUUID();
 
@@ -46,6 +46,14 @@ public class PatientEntity {
 
   @Column(name = "deleted_at")
   private Instant deletedAt;
+
+  public PatientEntity(
+      String firstName, String middleName, String lastName, LocalDate dateOfBirth) {
+    this.firstName = firstName;
+    this.middleName = middleName;
+    this.lastName = lastName;
+    this.dateOfBirth = dateOfBirth;
+  }
 
   @PrePersist
   void onCreate() {

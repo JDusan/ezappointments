@@ -38,14 +38,7 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
       from AppointmentEntity a
       join a.doctorParticipants dp
       where dp.doctor.id = :doctorId
-        and (:cursorStartsAt is null
-          or a.startsAt > :cursorStartsAt
-          or (a.startsAt = :cursorStartsAt and a.id > :cursorId))
       order by a.startsAt asc, a.id asc
       """)
-  List<UUID> findPageIdsByDoctorId(
-      @Param("doctorId") UUID doctorId,
-      @Param("cursorStartsAt") Instant cursorStartsAt,
-      @Param("cursorId") UUID cursorId,
-      Pageable pageable);
+  List<UUID> findPageIdsByDoctorId(@Param("doctorId") UUID doctorId, Pageable pageable);
 }

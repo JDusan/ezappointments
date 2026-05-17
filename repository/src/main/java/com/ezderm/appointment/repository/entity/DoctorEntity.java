@@ -21,7 +21,7 @@ import lombok.Setter;
 public class DoctorEntity {
 
   @Id
-  @Column(name = "id", nullable = false)
+  @Column(name = "id", nullable = false, updatable = false)
   @Setter(AccessLevel.NONE)
   private UUID id = UUID.randomUUID();
 
@@ -42,6 +42,12 @@ public class DoctorEntity {
 
   @Column(name = "deleted_at")
   private Instant deletedAt;
+
+  public DoctorEntity(String username, String firstName, String lastName) {
+    this.username = username;
+    this.firstName = firstName;
+    this.lastName = lastName;
+  }
 
   @PrePersist
   void onCreate() {

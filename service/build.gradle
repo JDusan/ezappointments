@@ -1,5 +1,17 @@
 description = 'Business services, mappers, and domain exceptions'
 
 dependencies {
+	implementation project(':api-spec')
 	implementation project(':repository')
+
+	implementation 'org.springframework:spring-context'
+	implementation 'org.springframework:spring-tx'
+	implementation 'org.springframework:spring-web'
+	implementation 'org.springframework.data:spring-data-commons'
+	implementation 'org.mapstruct:mapstruct:1.6.3'
+
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
 }
