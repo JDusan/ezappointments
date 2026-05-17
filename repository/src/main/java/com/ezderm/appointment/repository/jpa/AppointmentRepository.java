@@ -2,15 +2,14 @@ package com.ezderm.appointment.repository.jpa;
 
 import com.ezderm.appointment.repository.entity.AppointmentEntity;
 import com.ezderm.appointment.repository.entity.AppointmentStatus;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface AppointmentRepository extends JpaRepository<AppointmentEntity, UUID> {
 

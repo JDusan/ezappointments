@@ -1,5 +1,12 @@
 description = 'REST controllers, request filters, and exception handling'
 
 dependencies {
+	implementation project(':api-spec')
 	implementation project(':service')
+
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
 }
