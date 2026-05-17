@@ -30,7 +30,7 @@ Run from the repository root.
 .\gradlew.bat spotlessCheck
 ```
 
-On macOS/Linux, use `./gradlew` instead of `.\gradlew.bat`.
+On macOS/Linux, use `./gradlew` instead of `.\gradlew.bat`
 
 ## Local Database
 
@@ -43,6 +43,15 @@ docker compose --profile tools up -d
 
 # Stop local infra
 docker compose down
+
+# Stop local infra and delete database volume
+docker compose down -v
+
+# Check whether Postgres is running and healthy
+docker inspect -f "{{.State.Status}} {{.State.Health.Status}}" ezappointments-postgres
+
+# List tables in the dev database
+docker exec -it ezappointments-postgres psql -U ezappointments -d ezappointments -c "\dt"
 ```
 
 Postgres dev settings:
@@ -61,6 +70,16 @@ docker compose up -d postgres
 
 The dev profile is the default profile. App port: `8080`.
 
+## Postman
+
+Postman collection:
+
+```text
+etc/postman/ez_server.postman_collection.json
+```
+
+It contains requests for the local server and defaults to `http://localhost:8080`.
+
 ## OpenAPI
 
 Source spec:
@@ -77,6 +96,6 @@ api-spec/build/generated/openapi
 ## API Assumptions
 
 - Delete endpoints return `204 No Content`.
-- Pagination uses classic zero-based `page` plus `size` query parameters.
+- Pagination uses zero-based `page` plus `size` query parameters.
 - `409 Conflict` is used when deleting doctors or patients with active future appointments.
 - `X-Username` is trusted auth input and is required by all endpoints.

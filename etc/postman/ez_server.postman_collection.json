@@ -1,0 +1,479 @@
+{
+  "info": {
+    "_postman_id": "76f7b82c-0fc5-4c58-8dd7-1de6585f3617",
+    "name": "EzDerm Appointment API",
+    "description": "Requests for the local EzDerm appointment server generated from api-spec-ezderm.yml and DefaultApiController.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "xUsername",
+      "value": "seed_doctor_1"
+    },
+    {
+      "key": "doctorUsername",
+      "value": "doctor_three"
+    },
+    {
+      "key": "doctorFirstName",
+      "value": "Ada"
+    },
+    {
+      "key": "doctorLastName",
+      "value": "Lovelace"
+    },
+    {
+      "key": "patientFirstName",
+      "value": "Grace"
+    },
+    {
+      "key": "patientLastName",
+      "value": "Hopper"
+    },
+    {
+      "key": "patientDateOfBirth",
+      "value": "1985-01-15"
+    },
+    {
+      "key": "doctorId",
+      "value": "11111111-1111-1111-1111-111111111111"
+    },
+    {
+      "key": "patientId",
+      "value": "33333333-3333-3333-3333-333333333333"
+    },
+    {
+      "key": "appointmentId",
+      "value": "55555555-5555-5555-5555-555555555555"
+    },
+    {
+      "key": "startsAt",
+      "value": "2030-01-15T09:00:00Z"
+    },
+    {
+      "key": "endsAt",
+      "value": "2030-01-15T09:30:00Z"
+    },
+    {
+      "key": "page",
+      "value": "0"
+    },
+    {
+      "key": "size",
+      "value": "20"
+    }
+  ],
+  "item": [
+    {
+      "name": "Doctors",
+      "item": [
+        {
+          "name": "Create Doctor",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Username",
+                "value": "{{xUsername}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"{{doctorUsername}}\",\n  \"firstName\": \"{{doctorFirstName}}\",\n  \"lastName\": \"{{doctorLastName}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/doctor",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "doctor"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  const body = pm.response.json();",
+                  "  pm.collectionVariables.set('doctorId', body.id);",
+                  "  pm.collectionVariables.set('xUsername', body.username);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Doctor",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "X-Username",
+                "value": "{{xUsername}}"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/doctor/{{doctorId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "doctor",
+                "{{doctorId}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Patients",
+      "item": [
+        {
+          "name": "Create Patient",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Username",
+                "value": "{{xUsername}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"{{patientFirstName}}\",\n  \"middleName\": null,\n  \"lastName\": \"{{patientLastName}}\",\n  \"dateOfBirth\": \"{{patientDateOfBirth}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/patient",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "patient"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  const body = pm.response.json();",
+                  "  pm.collectionVariables.set('patientId', body.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Search Patients",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Username",
+                "value": "{{xUsername}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"Hop\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/patient/search?page={{page}}&size={{size}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "patient",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "{{page}}"
+                },
+                {
+                  "key": "size",
+                  "value": "{{size}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Patient",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "X-Username",
+                "value": "{{xUsername}}"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/patient/{{patientId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "patient",
+                "{{patientId}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Appointments",
+      "item": [
+        {
+          "name": "Create Appointment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Username",
+                "value": "{{xUsername}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patientId\": \"{{patientId}}\",\n  \"doctorIds\": [\n    \"{{doctorId}}\"\n  ],\n  \"createdByDoctorId\": \"{{doctorId}}\",\n  \"startsAt\": \"{{startsAt}}\",\n  \"endsAt\": \"{{endsAt}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/appointment",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "appointment"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  const body = pm.response.json();",
+                  "  pm.collectionVariables.set('appointmentId', body.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Appointment",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Username",
+                "value": "{{xUsername}}"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/appointment/{{appointmentId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "appointment",
+                "{{appointmentId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Cancel Appointment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Username",
+                "value": "{{xUsername}}"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/appointment/{{appointmentId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "appointment",
+                "{{appointmentId}}"
+              ]
+            },
+            "description": "The API spec uses POST /v1/appointment/{id} for cancel."
+          }
+        },
+        {
+          "name": "Get Appointments By Doctor",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Username",
+                "value": "{{xUsername}}"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/appointment/doctor/{{doctorId}}?page={{page}}&size={{size}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "appointment",
+                "doctor",
+                "{{doctorId}}"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "{{page}}"
+                },
+                {
+                  "key": "size",
+                  "value": "{{size}}"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Negative Cases",
+      "item": [
+        {
+          "name": "Missing X-Username",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/appointment/{{appointmentId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "appointment",
+                "{{appointmentId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Invalid X-Username",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Username",
+                "value": "bad"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/appointment/{{appointmentId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "appointment",
+                "{{appointmentId}}"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

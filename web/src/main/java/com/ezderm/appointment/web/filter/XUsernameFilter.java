@@ -26,7 +26,8 @@ class XUsernameFilter extends OncePerRequestFilter {
 
   private final HandlerExceptionResolver handlerExceptionResolver;
 
-  XUsernameFilter(@Qualifier("handlerExceptionResolver") HandlerExceptionResolver handlerExceptionResolver) {
+  XUsernameFilter(
+      @Qualifier("handlerExceptionResolver") HandlerExceptionResolver handlerExceptionResolver) {
     this.handlerExceptionResolver = handlerExceptionResolver;
   }
 

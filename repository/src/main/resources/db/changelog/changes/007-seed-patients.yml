@@ -1,0 +1,44 @@
+databaseChangeLog:
+  - changeSet:
+      id: 008-seed-patients
+      author: dusanjanic
+      changes:
+        - insert:
+            tableName: patient
+            columns:
+              - column:
+                  name: id
+                  value: 33333333-3333-3333-3333-333333333333
+              - column:
+                  name: first_name
+                  value: Grace
+              - column:
+                  name: middle_name
+                  value: Brewster
+              - column:
+                  name: last_name
+                  value: Hopper
+              - column:
+                  name: date_of_birth
+                  valueDate: 1985-01-15
+              - column:
+                  name: created_at
+                  valueDate: 2026-01-01T00:00:00Z
+        - insert:
+            tableName: patient
+            columns:
+              - column:
+                  name: id
+                  value: 44444444-4444-4444-4444-444444444444
+              - column:
+                  name: first_name
+                  value: Katherine
+              - column:
+                  name: last_name
+                  value: Johnson
+              - column:
+                  name: date_of_birth
+                  valueDate: 1990-08-26
+              - column:
+                  name: created_at
+                  valueDate: 2026-01-01T00:00:00Z

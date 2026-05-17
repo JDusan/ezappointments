@@ -9,3 +9,9 @@ databaseChangeLog:
       file: db/changelog/changes/004-create-appointment-doctor.yml
   - include:
       file: db/changelog/changes/005-enable-patient-trigram-search.yml
+  - include:
+      file: db/changelog/changes/006-seed-doctors.yml
+  - include:
+      file: db/changelog/changes/007-seed-patients.yml
+  - include:
+      file: db/changelog/changes/008-seed-appointments.yml

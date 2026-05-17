@@ -28,7 +28,7 @@ class RestExceptionHandler {
       ValidationException exception, HttpServletRequest request) {
     ErrorResponse body =
         new ErrorResponse("Bad Request", HttpStatus.BAD_REQUEST.value())
-            .detail(exception.getMessage())
+            .detail(exception.getLocalizedMessage())
             .instance(request.getRequestURI());
     return ResponseEntity.status(HttpStatus.BAD_REQUEST)
         .contentType(MediaType.APPLICATION_JSON)

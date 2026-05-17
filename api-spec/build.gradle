@@ -5,8 +5,12 @@ plugins {
 description = 'OpenAPI contract and generated API DTOs/interfaces'
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	api 'org.springframework:spring-web'
+	api 'org.springframework:spring-context'
+	api 'com.fasterxml.jackson.core:jackson-annotations'
+	api 'jakarta.validation:jakarta.validation-api'
+	api 'jakarta.annotation:jakarta.annotation-api'
+	api 'jakarta.servlet:jakarta.servlet-api'
 }
 
 def generatedDir = layout.buildDirectory.dir('generated/openapi')
