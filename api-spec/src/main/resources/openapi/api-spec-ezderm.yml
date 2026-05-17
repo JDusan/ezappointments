@@ -15,6 +15,11 @@ paths:
     post:
       operationId: createAppointment
       summary: Create a new appointment
+      description: >
+        Creates an appointment for a patient and one or more doctors. The
+        createdByDoctorId field identifies the doctor responsible for creating
+        the appointment. X-Username is still required as the trusted caller
+        identity.
       parameters:
         - in: header
           name: X-Username
@@ -167,21 +172,8 @@ paths:
             type: string
             format: uuid
           description: The unique ID of the doctor whose appointments to retrieve.
-        - in: query
-          name: limit
-          required: false
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 200
-            default: 20
-          description: Maximum number of appointments to return.
-        - in: query
-          name: cursor
-          required: false
-          schema:
-            type: string
-          description: Opaque pagination cursor for fetching the next page of appointments.
+        - $ref: '#/components/parameters/LimitParam'
+        - $ref: '#/components/parameters/CursorParam'
       responses:
         '200':
           description: A list of appointments for the specified doctor.
@@ -265,8 +257,10 @@ paths:
           description: >
             Required username header. All users must supply
             a valid username, even for searching.
+        - $ref: '#/components/parameters/LimitParam'
+        - $ref: '#/components/parameters/CursorParam'
       requestBody:
-        description: JSON object containing search text and limit
+        description: JSON object containing search text.
         required: true
         content:
           application/json:
@@ -433,6 +427,24 @@ paths:
                         $ref: '#/components/schemas/ErrorResponse'
 
 components:
+  parameters:
+    LimitParam:
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 200
+        default: 20
+      description: Maximum number of items to return.
+    CursorParam:
+      in: query
+      name: cursor
+      required: false
+      schema:
+        type: string
+      description: Opaque pagination cursor for fetching the next page.
   schemas:
     Doctor:
       type: object
@@ -547,6 +559,7 @@ components:
       required:
         - patientId
         - doctorIds
+        - createdByDoctorId
         - startsAt
         - endsAt
       properties:
@@ -559,6 +572,9 @@ components:
           items:
             type: string
             format: uuid
+        createdByDoctorId:
+          type: string
+          format: uuid
         startsAt:
           type: string
           format: date-time
@@ -574,15 +590,6 @@ components:
           type: string
           minLength: 1
           description: Free-text patient search term.
-        limit:
-          type: integer
-          minimum: 1
-          maximum: 200
-          default: 20
-        cursor:
-          type: string
-          nullable: true
-          description: Opaque pagination cursor for fetching the next page.
     ErrorResponse:
       type: object
       required:

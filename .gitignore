@@ -4,9 +4,14 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+### IntelliJ IDEA ###
+.idea/*
+!.idea/codeStyles
+!.idea/inspectionProfiles
+!.idea/runConfigurations
+
 # Default ignored files
 /shelf/
-/.idea/workspace.xml
 # Editor-based HTTP Client requests
 /httpRequests/
 # Ignored default folder with query files

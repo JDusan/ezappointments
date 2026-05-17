@@ -1,0 +1,49 @@
+databaseChangeLog:
+  - changeSet:
+      id: 004-create-appointment-doctor
+      author: dusanjanic
+      changes:
+        - createTable:
+            tableName: appointment_doctor
+            columns:
+              - column:
+                  name: appointment_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: doctor_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: sort_order
+                  type: int
+                  defaultValueNumeric: 0
+                  constraints:
+                    nullable: false
+        - addPrimaryKey:
+            tableName: appointment_doctor
+            columnNames: appointment_id, doctor_id
+            constraintName: pk_appointment_doctor
+        - addForeignKeyConstraint:
+            baseTableName: appointment_doctor
+            baseColumnNames: appointment_id
+            referencedTableName: appointment
+            referencedColumnNames: id
+            constraintName: fk_appointment_doctor_appointment
+            onDelete: CASCADE
+        - addForeignKeyConstraint:
+            baseTableName: appointment_doctor
+            baseColumnNames: doctor_id
+            referencedTableName: doctor
+            referencedColumnNames: id
+            constraintName: fk_appointment_doctor_doctor
+        - createIndex:
+            tableName: appointment_doctor
+            indexName: idx_appointment_doctor_doctor
+            columns:
+              - column:
+                  name: doctor_id
+              - column:
+                  name: appointment_id

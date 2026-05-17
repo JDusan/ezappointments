@@ -1,0 +1,16 @@
+databaseChangeLog:
+  - changeSet:
+      id: 005-enable-pg-trgm
+      author: dusanjanic
+      changes:
+        - sql:
+            sql: CREATE EXTENSION IF NOT EXISTS pg_trgm;
+  - changeSet:
+      id: 006-create-patient-name-trigram-index
+      author: dusanjanic
+      changes:
+        - sql:
+            sql: >
+              CREATE INDEX idx_patient_name_trgm
+              ON patient
+              USING gin ((lower(first_name || ' ' || coalesce(middle_name, '') || ' ' || last_name)) gin_trgm_ops);

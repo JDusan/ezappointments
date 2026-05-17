@@ -2,4 +2,10 @@ description = 'Persistence entities, repositories, and Liquibase changelogs'
 
 dependencies {
 	implementation project(':api-spec')
+
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.liquibase:liquibase-core'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	runtimeOnly 'org.postgresql:postgresql'
 }
