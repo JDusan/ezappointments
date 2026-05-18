@@ -49,7 +49,7 @@ class AppointmentServiceImpl implements AppointmentService {
             .orElseThrow(() -> new NotFoundException("Patient not found"));
     DoctorEntity creator =
         doctorRepository
-            .findByUsernameAndDeletedAtIsNull(requiredUsername())
+            .findByIdAndDeletedAtIsNull(request.getCreatedByDoctorId())
             .orElseThrow(() -> new NotFoundException("Current doctor not found"));
     List<DoctorEntity> doctors = activeDoctorsInRequestOrder(request.getDoctorIds());
 

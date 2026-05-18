@@ -16,16 +16,18 @@ services:
             timeout: 5s
             retries: 5
 
-    pgadmin:
-        image: dpage/pgadmin4:latest
-        container_name: ezappointments-pgadmin
-        profiles:
-            - tools
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: ezappointments-app
         environment:
-            PGADMIN_DEFAULT_EMAIL: admin@ezappointments.local
-            PGADMIN_DEFAULT_PASSWORD: admin
+            SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/ezappointments
+            SPRING_DATASOURCE_USERNAME: ezappointments
+            SPRING_DATASOURCE_PASSWORD: ezappointments
+            SPRING_LIQUIBASE_ENABLED: "true"
         ports:
-            - "5050:80"
+            - "8080:8080"
         depends_on:
             postgres:
                 condition: service_healthy

@@ -605,10 +605,6 @@ components:
         - status
         - title
       properties:
-        type:
-          type: string
-          format: uri
-          nullable: true
         title:
           type: string
         status:

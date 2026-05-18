@@ -3,6 +3,8 @@ spring:
     name: ezderm-appointment
   profiles:
     default: dev
+  error:
+    include-stacktrace: NEVER
 
 ---
 spring:
