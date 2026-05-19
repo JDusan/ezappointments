@@ -95,8 +95,11 @@ class RestExceptionHandler {
         request);
   }
 
-  @ExceptionHandler(
-    {NoHandlerFoundException.class, NoResourceFoundException.class, HttpRequestMethodNotSupportedException.class})
+  @ExceptionHandler({
+    NoHandlerFoundException.class,
+    NoResourceFoundException.class,
+    HttpRequestMethodNotSupportedException.class
+  })
   ResponseEntity<ApiErrorResponse> handleNoHandlerFound(HttpServletRequest request) {
     return error(HttpStatus.NOT_FOUND, "Resource not found.", request);
   }
