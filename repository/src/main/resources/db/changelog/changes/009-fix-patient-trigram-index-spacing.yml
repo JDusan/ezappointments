@@ -9,4 +9,5 @@ databaseChangeLog:
             sql: >
               CREATE INDEX idx_patient_name_trgm
               ON patient
-              USING gin ((lower(first_name || CASE WHEN middle_name IS NULL THEN ' ' ELSE ' ' || middle_name || ' ' END || last_name)) gin_trgm_ops);
+              USING gin ((lower(first_name || CASE WHEN middle_name IS NULL THEN ' ' ELSE ' ' || middle_name || ' ' END || last_name)) gin_trgm_ops)
+              WHERE deleted_at IS NULL;

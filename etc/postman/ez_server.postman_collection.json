@@ -348,6 +348,12 @@
                 "v1",
                 "appointment",
                 "{{appointmentId}}"
+              ],
+              "variable": [
+                {
+                  "key": "appointmentId",
+                  "value": "55555555-5555-5555-5555-555555555555"
+                }
               ]
             }
           }

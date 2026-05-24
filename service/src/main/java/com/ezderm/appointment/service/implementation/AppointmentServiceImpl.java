@@ -123,7 +123,7 @@ class AppointmentServiceImpl implements AppointmentService {
       throw new ValidationException("At least one doctor is required");
     }
 
-    List<UUID> distinctIds = new ArrayList<>(new LinkedHashSet<>(doctorIds));
+    List<UUID> distinctIds = doctorIds.stream().distinct().toList();
     List<DoctorEntity> doctors = doctorRepository.findByIdInAndDeletedAtIsNull(distinctIds);
     if (doctors.size() != distinctIds.size()) {
       throw new NotFoundException("One or more doctors were not found");
