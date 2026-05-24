@@ -9,7 +9,7 @@ import java.util.List;
 public class PatientSearchRepositoryImpl implements PatientSearchRepository {
 
   private static final String SEARCH_EXPRESSION =
-      "lower(first_name || ' ' || coalesce(middle_name, '') || ' ' || last_name)";
+      "lower(first_name || CASE WHEN middle_name IS NULL THEN ' ' ELSE ' ' || middle_name || ' ' END || last_name)";
 
   @PersistenceContext private EntityManager entityManager;
 

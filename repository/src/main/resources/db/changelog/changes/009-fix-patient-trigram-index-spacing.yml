@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: 009-fix-patient-trigram-index-spacing
+      author: codex
+      changes:
+        - sql:
+            sql: DROP INDEX IF EXISTS idx_patient_name_trgm;
+        - sql:
+            sql: >
+              CREATE INDEX idx_patient_name_trgm
+              ON patient
+              USING gin ((lower(first_name || CASE WHEN middle_name IS NULL THEN ' ' ELSE ' ' || middle_name || ' ' END || last_name)) gin_trgm_ops);
