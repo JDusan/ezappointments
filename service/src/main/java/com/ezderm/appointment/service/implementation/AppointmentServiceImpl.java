@@ -99,10 +99,12 @@ class AppointmentServiceImpl implements AppointmentService {
         new ArrayList<>(
             appointmentRepository.findPageIdsByDoctorId(
                 doctorId, PageRequest.of(pageNumber, pageSize)));
+    if (pageIds.isEmpty()) {
+      return new AppointmentPageResponse().items(List.of()).page(new PageInfo(pageNumber, pageSize));
+    }
 
     Map<UUID, AppointmentEntity> appointmentsById =
-        pageIds.stream()
-            .map(this::findAppointment)
+        appointmentRepository.findAllByIdWithDetails(pageIds).stream()
             .collect(Collectors.toMap(AppointmentEntity::getId, Function.identity()));
     List<Appointment> appointments =
         pageIds.stream().map(appointmentsById::get).map(appointmentMapper::mapToDto).toList();

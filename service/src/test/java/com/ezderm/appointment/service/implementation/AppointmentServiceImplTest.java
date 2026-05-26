@@ -167,10 +167,8 @@ class AppointmentServiceImplTest {
     when(doctorRepository.findByIdAndDeletedAtIsNull(doctorId)).thenReturn(Optional.of(doctor));
     when(appointmentRepository.findPageIdsByDoctorId(eq(doctorId), any(Pageable.class)))
         .thenReturn(List.of(appointmentIdTwo, appointmentIdOne));
-    when(appointmentRepository.findByIdWithDetails(appointmentIdOne))
-        .thenReturn(Optional.of(appointmentOne));
-    when(appointmentRepository.findByIdWithDetails(appointmentIdTwo))
-        .thenReturn(Optional.of(appointmentTwo));
+    when(appointmentRepository.findAllByIdWithDetails(List.of(appointmentIdTwo, appointmentIdOne)))
+        .thenReturn(List.of(appointmentOne, appointmentTwo));
     when(appointmentMapper.mapToDto(appointmentOne)).thenReturn(dtoOne);
     when(appointmentMapper.mapToDto(appointmentTwo)).thenReturn(dtoTwo);
 
